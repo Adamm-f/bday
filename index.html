@@ -7,6 +7,7 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <title>Happy Birthday</title>
+    <link rel="icon" href="imgs/black-heart-favicon.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -521,6 +522,7 @@
           { src: "imgs/20260825_195628(1).jpg", caption: "Type shi" },
           { src: "imgs/20260825_195654(1).jpg", caption: "Preciosa" },
           { src: "imgs/20260802_205421(1).jpg", caption: "Guapa" },
+          { src: "imgs/20261031_231234(1).jpg", caption: "Cute"},
         ];
         var track = document.getElementById("track"),
           counter = document.getElementById("counter");
@@ -557,7 +559,6 @@
         }
         var cur = n,
           raf = 0;
-        /* three identical copies sit side by side; after each move we jump back to the middle copy so it never ends */
         function recenter() {
           if (cur < n || cur >= 2 * n) {
             cur += cur < n ? n : -n;
