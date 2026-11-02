@@ -28,6 +28,7 @@
       }
       html {
         scroll-behavior: smooth;
+        scrollbar-gutter: stable;
       }
       body {
         background: var(--bg);
@@ -300,36 +301,41 @@
         font-variant-numeric: tabular-nums;
       }
       .btns {
+        position: relative;
+        z-index: 30;
         display: flex;
-        gap: clamp(12px, 0.8vw, 16px);
+        gap: clamp(28px, 3vw, 56px);
       }
       .btns button {
-        width: clamp(44px, 2.9vw, 56px);
-        aspect-ratio: 1;
-        display: grid;
-        place-items: center;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 2px 10px;
         background: transparent;
         color: #fff;
-        border: 1px solid rgba(255, 255, 255, 0.55);
+        border: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+        font: 500 13px/1 var(--body);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
         cursor: pointer;
-        transition:
-          background 0.2s,
-          opacity 0.2s;
+        transition: border-color 0.2s;
+        -webkit-tap-highlight-color: transparent;
       }
-      .btns button:hover:not(:disabled) {
-        background: rgba(255, 255, 255, 0.12);
+      .btns button:hover {
+        border-bottom-color: #fff;
       }
-      .btns button:disabled {
-        opacity: 0.35;
-        cursor: default;
+      .btns button:focus:not(:focus-visible) {
+        outline: none;
       }
       .btns button:focus-visible {
         outline: 2px solid #fff;
-        outline-offset: 3px;
+        outline-offset: 4px;
       }
       .btns svg {
-        width: 18px;
-        height: 18px;
+        width: 26px;
+        height: 12px;
+        flex: none;
       }
       .foot {
         display: flex;
@@ -358,6 +364,106 @@
         }
       }
 
+      html.lb-open {
+        overflow: hidden;
+      }
+      .lb {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        background: rgba(5, 5, 5, 0.97);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: max(64px, calc(env(safe-area-inset-top, 0px) + 56px)) 0
+          max(56px, calc(env(safe-area-inset-bottom, 0px) + 40px));
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      .lb.on {
+        opacity: 1;
+      }
+      .lb-media {
+        max-width: 100%;
+        max-height: calc(100vh - 170px);
+        max-height: calc(100dvh - 170px);
+        object-fit: contain;
+        filter: grayscale(1);
+        will-change: transform;
+        transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .lb-ph {
+        width: 100%;
+        aspect-ratio: 3/2;
+        background: radial-gradient(
+          ellipse at 60% 35%,
+          #8a8a8a 0%,
+          #3a3a3a 50%,
+          #161616 100%
+        );
+      }
+      .lb-cap {
+        margin-top: 18px;
+        font-size: 13px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #8d919b;
+      }
+      .lb {
+        touch-action: none;
+      }
+      .lb-x {
+        position: absolute;
+        top: max(18px, calc(env(safe-area-inset-top, 0px) + 10px));
+        right: max(22px, env(safe-area-inset-right, 0px));
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 2px 10px;
+        background: transparent;
+        border: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+        color: #fff;
+        font: 500 13px/1 var(--body);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .lb-x:hover {
+        border-bottom-color: #fff;
+      }
+      .lb-x:focus:not(:focus-visible) {
+        outline: none;
+      }
+      .lb-x i {
+        position: relative;
+        display: block;
+        width: 18px;
+        height: 18px;
+      }
+      .lb-x i::before,
+      .lb-x i::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 22px;
+        height: 1px;
+        background: #fff;
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+      .lb-x i::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .lb,
+        .lb-media {
+          transition-duration: 0.01s;
+        }
+      }
+
       /* Fixed nav */
       .nav {
         position: fixed;
@@ -369,8 +475,10 @@
         align-items: flex-end;
         gap: 26px;
         mix-blend-mode: difference;
+        pointer-events: none;
       }
       .nav a {
+        pointer-events: auto;
         color: #fff;
         text-decoration: none;
         font-size: clamp(15px, 0.95vw, 18px);
@@ -441,7 +549,7 @@
         <p class="eyebrow">For Niki &amp; Lenka</p>
         <p class="lead">
           This little corner of the internet is dedicated to two wonderful
-          friends — Niki and Lenka. Created for their kidness, and the
+          friends — Niki and Lenka. Created for their kindness, and the
           laughter, joy, or endless support they bring to everyone around them!
         </p>
       </section>
@@ -471,6 +579,7 @@
         </li>
       </ul>
     </section>
+
     <section class="gallery" id="gallery">
       <h2>Gallery</h2>
       <div
@@ -480,30 +589,18 @@
         aria-label="Photo gallery, scroll sideways"
       ></div>
       <div class="controls">
-        <span class="counter" id="counter" aria-live="polite">01 / 05</span>
+        <span class="counter" id="counter" aria-live="polite">01 / 06</span>
         <div class="btns">
           <button type="button" id="prev" aria-label="Previous photo">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M20 12H4M10 6l-6 6 6 6" />
+            <svg viewBox="0 0 26 12" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M25 6H1M6 1L1 6l5 5" />
             </svg>
+            <span>Prev</span>
           </button>
           <button type="button" id="next" aria-label="Next photo">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M4 12h16M14 6l6 6-6 6" />
+            <span>Next</span>
+            <svg viewBox="0 0 26 12" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 6h24M20 1l5 5-5 5" />
             </svg>
           </button>
         </div>
@@ -522,7 +619,10 @@
           { src: "imgs/20260825_195628(1).jpg", caption: "Type shi" },
           { src: "imgs/20260825_195654(1).jpg", caption: "Preciosa" },
           { src: "imgs/20260802_205421(1).jpg", caption: "Guapa" },
-          { src: "imgs/20261031_231234(1).jpg", caption: "Cute"},
+          { src: "imgs/20261031_231234(1).jpg", caption: "Cute" },
+          { src: "imgs/IMG_20260928_120334_081(1).jpg", caption: "Crazy" },
+          { src: "imgs/Snapchat-1276200399(1).jpg", caption: "Mood"},
+          { src: "imgs/Snapchat-1710690034(1).jpg", caption: "🥹"},
         ];
         var track = document.getElementById("track"),
           counter = document.getElementById("counter");
@@ -539,6 +639,7 @@
             if (p.src) d.style.setProperty("--img", 'url("' + p.src + '")');
             var c = document.createElement("figcaption");
             c.textContent = p.caption;
+            f.dataset.src = p.src || "";
             f.appendChild(d);
             f.appendChild(c);
             track.appendChild(f);
@@ -610,9 +711,10 @@
             go(cur - 1);
           }
         });
-        /* drag or swipe: a short pull is enough to change photo, either way */
+
         var down = false,
           sx = 0,
+          sy = 0,
           sl = 0,
           st = 0;
         track.addEventListener("pointerdown", function (e) {
@@ -621,6 +723,7 @@
           cur = idx();
           down = true;
           sx = e.clientX;
+          sy = e.clientY;
           sl = track.scrollLeft;
           st = performance.now();
           track.classList.add("drag");
@@ -635,13 +738,26 @@
           track.classList.remove("drag");
           var dx = e.type === "pointercancel" ? 0 : e.clientX - sx;
           var dt = Math.max(1, performance.now() - st);
+          if (
+            e.type === "pointerup" &&
+            Math.abs(dx) < 8 &&
+            Math.abs(e.clientY - sy) < 8 &&
+            dt < 500
+          ) {
+            var hit = slideAt(e.clientX, e.clientY);
+            if (hit) {
+              go(cur);
+              openLB(hit);
+              return;
+            }
+          }
           var flick = Math.abs(dx) > 14 && Math.abs(dx) / dt > 0.35;
           if (Math.abs(dx) > 40 || flick) go(cur + (dx < 0 ? 1 : -1));
           else go(cur);
         }
         track.addEventListener("pointerup", end);
         track.addEventListener("pointercancel", end);
-        /* trackpad sideways swipe */
+
         var lock = 0;
         track.addEventListener(
           "wheel",
@@ -659,9 +775,109 @@
           },
           { passive: false },
         );
+
+        var lb = null;
+        function slideAt(x, y) {
+          for (var i = 0; i < slides.length; i++) {
+            var r = slides[i].querySelector(".photo").getBoundingClientRect();
+            if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom)
+              return slides[i];
+          }
+          return null;
+        }
+        function flip(thumb, el) {
+          var a = thumb.getBoundingClientRect(),
+            b = el.getBoundingClientRect();
+          if (!b.width || !b.height) return "scale(.9)";
+          return (
+            "translate(" +
+            (a.left + a.width / 2 - b.left - b.width / 2) +
+            "px," +
+            (a.top + a.height / 2 - b.top - b.height / 2) +
+            "px) scale(" +
+            a.width / b.width +
+            ")"
+          );
+        }
+        function openLB(slide) {
+          if (lb) return;
+          var thumb = slide.querySelector(".photo"),
+            src = slide.dataset.src,
+            label = slide.querySelector("figcaption").textContent;
+          var o = document.createElement("div");
+          o.className = "lb";
+          o.setAttribute("role", "dialog");
+          o.setAttribute("aria-modal", "true");
+          o.setAttribute("aria-label", label);
+          var el;
+          if (src) {
+            el = document.createElement("img");
+            el.src = src;
+            el.alt = label;
+            el.draggable = false;
+          } else {
+            el = document.createElement("div");
+            el.className = "lb-ph";
+          }
+          el.classList.add("lb-media");
+          var cap = document.createElement("p");
+          cap.className = "lb-cap";
+          cap.textContent = label;
+          var x = document.createElement("button");
+          x.type = "button";
+          x.className = "lb-x";
+          x.setAttribute("aria-label", "Close");
+          x.innerHTML = "<span>Close</span><i></i>";
+          o.appendChild(el);
+          o.appendChild(cap);
+          o.appendChild(x);
+          document.body.appendChild(o);
+          document.documentElement.classList.add("lb-open");
+          lb = {
+            o: o,
+            el: el,
+            thumb: thumb,
+            closing: false,
+            opened: performance.now(),
+          };
+          function run() {
+            el.style.transition = "none";
+            el.style.transform = flip(thumb, el);
+            void o.offsetWidth;
+            el.style.transition = "";
+            o.classList.add("on");
+            el.style.transform = "none";
+          }
+          if (src && !el.complete) {
+            el.onload = run;
+            el.onerror = run;
+          } else run();
+          o.addEventListener("pointerup", function () {
+            if (!lb || performance.now() - lb.opened < 400) return;
+            closeLB();
+          });
+          x.focus({ preventScroll: true });
+        }
+        function closeLB() {
+          if (!lb || lb.closing) return;
+          lb.closing = true;
+          var cur_ = lb;
+          cur_.el.style.transform = flip(cur_.thumb, cur_.el);
+          cur_.o.classList.remove("on");
+          document.documentElement.classList.remove("lb-open");
+          setTimeout(function () {
+            if (cur_.o.parentNode) cur_.o.parentNode.removeChild(cur_.o);
+            if (lb === cur_) lb = null;
+          }, 550);
+        }
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closeLB();
+        });
         track.scrollLeft = cur * pitch();
         update();
       })();
+
+      /* birthday countdown */
       (function () {
         var now = new Date();
         var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -679,6 +895,8 @@
                 : "In " + days + " days";
         });
       })();
+
+      /* nav highlight */
       (function () {
         var links = [].slice.call(document.querySelectorAll(".nav a"));
         var map = {};
